@@ -1,0 +1,268 @@
+<!--
+ * @Descripttion: 
+ * @Author: guoxiaoqiang
+ * @Date: 2022-11-08 14:42:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-09 16:03:33
+ * @FilePath: font.html
+-->
+<!--
+ * @Descripttion: 
+ * @Author: guoxiaoqiang
+ * @Date: 2022-11-08 14:42:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-09 14:30:19
+ * @FilePath: font.html
+-->
+<!--
+ * @Descripttion: 
+ * @Author: guoxiaoqiang
+ * @Date: 2022-11-08 14:42:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-09 14:28:55
+ * @FilePath: font.html
+-->
+<!--
+ * @Descripttion: 
+ * @Author: guoxiaoqiang
+ * @Date: 2022-11-08 14:42:16
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-09 14:20:27
+ * @FilePath: font.html
+-->
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <title>字体</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div id="info"><a href="https://github.com/Godboy5" target="_blank" rel="noopener">字体</a></div>
+    <div id="container"></div>
+    <script type="x-shader/x-vertex" id="vertexshader">
+
+			uniform float amplitude;
+
+			attribute vec3 customColor;
+			attribute vec3 displacement;
+
+			varying vec3 vNormal;
+			varying vec3 vColor;
+
+			void main() {
+
+				vNormal = normal;
+				vColor = customColor;
+
+				vec3 newPosition = position + normal * amplitude * displacement;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+
+			}
+
+		</script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+
+			varying vec3 vNormal;
+			varying vec3 vColor;
+
+			void main() {
+
+				const float ambient = 0.4;
+
+				vec3 light = vec3( 1.0 );
+				light = normalize( light );
+
+				float directional = max( dot( vNormal, light ), 0.0 );
+
+				gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+
+			}
+
+		</script>
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+			{
+				"imports": {
+					"three": "/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+    <script type="module">
+        //引用three
+        import * as THREE from 'three';
+        //显示帧数以及画面渲染时间
+        import Stats from 'three/addons/libs/stats.module.js';
+        //轨迹球控件
+        import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+        //
+        import { TessellateModifier } from 'three/addons/modifiers/TessellateModifier.js';
+        //字体加载器
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        //文本几何图形
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+        //渲染器 场景 相机 帧数
+        let renderer, scene, camera, stats;
+        //轨道
+        let controls;
+        //网格 装饰器
+        let mesh, uniforms;
+
+        const WIDTH = window.innerWidth;
+        const HEIGHT = window.innerHeight;
+        //创建文字加载器实例
+        const loader = new FontLoader();
+        loader.load('fonts/helvetiker_bold.typeface.json', function (font) {
+            init(font)
+            animate()
+        })
+        //初始化字体
+        function init(font) {
+            /**
+             * @description:创建PerspectiveCamera 透视相机 fov - 视野角度  aspect — 摄像机视锥体长宽比  near — 摄像机视锥体近端面 far — 摄像机视锥体远端面
+             * @return 
+             */
+            camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 1, 10000);
+            camera.position.set(-100, 100, 200)
+            //创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050505);
+
+            //创建文本图形
+            let geometry = new TextGeometry('G', {
+                font: font,
+                size: 100,
+                height: 40,
+                //曲线段
+                curveSegments: 12,
+                //是否打开斜面
+                bevelEnabled: true,
+                //文本斜角有多深
+                bevelThickness: 20,
+                //距文本轮廓多远是斜角
+                bevelSize: 10,
+                //从文本轮廓斜角开始的距离
+                bevelOffset: 1,
+                //斜角段数
+                bevelSegments: 2,
+            });
+            //居中
+            geometry.center();
+            //创建修饰实例
+            const tessellateModifier = new TessellateModifier(8, 6);
+            geometry = tessellateModifier.modify(geometry);
+
+            const numFaces = geometry.attributes.position.count / 3;
+            //创建一个浮点数32位的数组
+            const colors = new Float32Array(numFaces * 3 * 3);
+            const displacement = new Float32Array(numFaces * 3 * 3);
+
+            const color = new THREE.Color();
+
+            for (let f = 0; f < numFaces; f++) {
+                const index = 9 * f;
+                //h - 0.0 和 1.0 之间的色调值
+                const h = 0.2 * Math.random();
+                // s - 0.0 和 1.0 之间的饱和度值
+                const s = 0.5 + Math.random();
+                //l - 0.0 和 1.0 之间的亮度值
+                const l = 0.5 + Math.random();
+                //根据 HSL 值设置颜色。
+                color.setHSL(h, s, l);
+
+                const d = 10 * (0.5 - Math.random());
+
+                for (let i = 0; i < 3; i++) {
+                    //颜色
+                    colors[index + (3 * i)] = color.r;
+                    colors[index + (3 * i) + 1] = color.g;
+                    colors[index + (3 * i) + 2] = color.b;
+
+                    //位移
+                    displacement[index + (3 * i)] = d;
+                    displacement[index + (3 * i) + 1] = d;
+                    displacement[index + (3 * i) + 2] = d;
+                }
+            }
+            //BufferAttribute - 缓冲区属性
+            geometry.setAttribute('customColor', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('displacement', new THREE.BufferAttribute(displacement, 3));
+
+            uniforms = {
+
+                amplitude: { value: 0.0 }
+
+            };
+
+            /**
+             * @description: 着色器材质 - ShaderMaterial ShaderMaterial只能由WebGLRenderer正确渲染，因为vertexShader 和fragmentShader属性中的 GLSL 代码必须使用 WebGL 在 GPU 上编译和运行。
+             * @return 
+             */
+            const shaderMaterial = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader: document.getElementById('vertexshader').textContent,
+                fragmentShader: document.getElementById('fragmentshader').textContent
+            });
+
+            //网格
+            mesh = new THREE.Mesh(geometry, shaderMaterial)
+            scene.add(mesh)
+            //创建渲染器实例  antialias - 是否执行抗锯齿
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            //设置设备像素比率
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(WIDTH, HEIGHT);
+
+            //获取元素
+            const container = document.getElementById('container');
+            container.appendChild(renderer.domElement);
+
+            //创建球形轨迹实例
+            controls = new TrackballControls(camera, renderer.domElement);
+
+            stats = new Stats()
+            container.appendChild(stats.dom);
+            //监听窗口大小
+            window.addEventListener('resize', onWindowResize)
+        }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updaProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        function animate() {
+            requestAnimationFrame(animate);
+
+            render();
+
+            stats.update();
+        }
+        function render() {
+
+            const time = Date.now() * 0.001;
+
+            uniforms.amplitude.value = 1.0 + Math.sin(time * 0.5);
+
+            controls.update();
+
+            renderer.render(scene, camera);
+
+        }
+    </script>
+
+</body>
+
+</html>
