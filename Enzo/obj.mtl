@@ -1,0 +1,157 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# �������ļ�:28.04.2015 09:45:54
+
+newmtl wire_000000000
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.3500 0.3500 0.3500
+
+newmtl Black_Rubber
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1373 0.1373 0.1373
+	Kd 0.1373 0.1373 0.1373
+	Ks 0.6300 0.6300 0.6300
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Map__13_Falloff.tga
+	map_Kd Map__13_Falloff.tga
+
+newmtl Door_Window
+	Ns 70.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 1.0800 1.0800 1.0800
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__16_VRayMap.tga
+
+newmtl Greel
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0980 0.0980 0.0980
+	Kd 0.0980 0.0980 0.0980
+	Ks 0.5400 0.5400 0.5400
+	Ke 0.0000 0.0000 0.0000
+	map_d Map__17_Gradient_Ramp.tga
+	map_bump -bm 0.5000 Map__17_Gradient_Ramp.tga
+	map_refl Map__18_VRayMap.tga
+
+newmtl Tail_Lamp_Cap
+	Ns 40.0000
+	Ni 1.5000
+	d 0.5000
+	Tr 0.5000
+	Tf 0.5000 0.5000 0.5000 
+	illum 2
+	Ka 0.6392 0.0000 0.0000
+	Kd 0.6392 0.0000 0.0000
+	Ks 0.7200 0.7200 0.7200
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__27_VRayMap.tga
+
+newmtl Tail_Lamp_Inner
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.3600 0.3600 0.3600
+	Ke 0.0000 0.0000 0.0000
+	map_bump -bm 0.5000 Map__29_Gradient_Ramp.tga
+
+newmtl Front_Lamp_Cap
+	Ns 50.0000
+	Ni 1.5000
+	d 0.1000
+	Tr 0.9000
+	Tf 0.1000 0.1000 0.1000 
+	illum 2
+	Ka 0.3137 0.3137 0.3137
+	Kd 0.3137 0.3137 0.3137
+	Ks 0.5400 0.5400 0.5400
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__21_VRayMap.tga
+
+newmtl Window
+	Ns 70.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 1.0800 1.0800 1.0800
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__16_VRayMap.tga
+
+newmtl Tire_trade
+	Ns 17.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1412 0.1333 0.1294
+	Kd 0.1412 0.1333 0.1294
+	Ks 0.4500 0.4500 0.4500
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__38_VRayMap.tga
+
+newmtl Tire_side
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1412 0.1333 0.1294
+	Kd 0.1412 0.1333 0.1294
+	Ks 0.5850 0.5850 0.5850
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__36_VRayMap.tga
+
+newmtl Metal_White_Chrome
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 1.3500 1.3500 1.3500
+	Ke 0.0000 0.0000 0.0000
+
+newmtl calliper_material
+	Ns 54.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.7333 0.1451 0.1451
+	Ks 0.4950 0.4950 0.4950
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__3_VRayMap.tga
