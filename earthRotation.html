@@ -56,7 +56,9 @@
             camera.aspect = sizes.width / sizes.height;
             camera.updateProjectionMatrix();
         })
-
+        // 添加坐标轴辅助器
+        const axesHelper = new THREE.AxesHelper(5);
+        scene.add(axesHelper);
         //初始化控制器
         const controls = new THREE.OrbitControls(camera, renderer.domElement)
         controls.enableDamping = true

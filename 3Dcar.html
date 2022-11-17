@@ -3,7 +3,7 @@
  * @Author: guoxiaoqiang
  * @Date: 2022-11-11 10:07:08
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-11-11 14:56:52
+ * @LastEditTime: 2022-11-17 18:03:37
  * @FilePath: 3Dcar.html
 -->
 <!DOCTYPE html>
@@ -31,15 +31,15 @@
         //解决跨域问题
         mtlLoader.setCrossOrigin('Anonymous');
         //mtlLoader.setCrossOrigin('no-cach');
-        mtlLoader.setPath('/Enzo/');
-        mtlLoader.load('obj.mtl',function(materials){
+        mtlLoader.setPath('/Niu/');
+        mtlLoader.load('file.mtl',function(materials){
             materials.preload();
             //obj 加载器
             let objLoader = new THREE.OBJLoader();
             // 返回一个包含材质的对象MaterialCreator
             objLoader.setMaterials(materials);
-            objLoader.setPath('/Enzo/');
-            objLoader.load('obj.obj',function(obj){
+            objLoader.setPath('./Niu/');
+            objLoader.load('file.obj',function(obj){
             scene.add(obj);
                 
                 //环境光

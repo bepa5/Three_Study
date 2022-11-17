@@ -1,0 +1,62 @@
+<!--
+ * @Descripttion: 
+ * @Author: guoxiaoqiang
+ * @Date: 2022-11-17 16:25:41
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-17 17:14:31
+ * @FilePath: 3D线条.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D线条</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            /* 隐藏body窗口区域滚动条 */
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/build/three.min.js"></script>
+    <script>
+        let scene, camera, renderer;
+        //创建场景
+        scene = new THREE.Scene();
+        //相机
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let k = width / height;
+        let s = 200;
+        camera = new THREE.OrthographicCamera(-width,width,height,-height,0.1,1000);
+        console.log(-width,width,height,-height,)
+        camera.position.set(0, 100, 100);
+        camera.lookAt(scene.position)
+        // 添加坐标轴辅助器
+        const axesHelper = new THREE.AxesHelper(100);
+            scene.add(axesHelper);
+        //材质
+        let geometry = new THREE.BoxGeometry(100, 100, 100);
+        let material = new THREE.MeshBasicMaterial({
+            color: 0x8B0000
+        });
+        let mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(0, 0, 0)
+        scene.add(mesh);
+        //渲染
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000080, 1);
+        document.body.appendChild(renderer.domElement)
+        renderer.render(scene, camera)
+
+    </script>
+</body>
+
+</html>

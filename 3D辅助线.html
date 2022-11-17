@@ -1,0 +1,96 @@
+<!--
+ * @Descripttion: 
+ * @Author: guoxiaoqiang
+ * @Date: 2022-11-17 10:09:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-11-17 17:07:10
+ * @FilePath: 3D辅助线.html
+-->
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D辅助线</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            /* 隐藏body窗口区域滚动条 */
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.122.0/examples/js/controls/OrbitControls.min.js"></script>
+
+    <script>
+        var scene, camera, renderer, cameraHelper;
+        var cube, controls;
+        //在页面加载完，进行绘制渲染页面
+        window.onload = function () {
+            init(); //数据初始化
+            setSize(); //设置大小画布
+            cube(); //绘制实体
+            animate(); //动画渲染
+        };
+        //初始化摄像机，场景，渲染器，以及一些工具，比如摄像机辅助线，控制器
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                500
+            );
+            camera.position.set(0,0,0);
+            //camera.up.set(0,1,0)
+            camera.lookAt(new THREE.Vector3(100, 100, 100));
+            //正交投影照相机
+            camera2 = new THREE.OrthographicCamera(-1, 1, 1, -1, 5, 10);
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            camera2.position.set(0, 0, 5);
+            camera2.lookAt(new THREE.Vector3(0, 0, 0));
+            renderer = new THREE.WebGLRenderer();
+            camera.position.z = 10;
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.autoRotate = true;
+
+            //照相机帮助线
+            cameraHelper = new THREE.CameraHelper(camera2);
+            scene.add(cameraHelper);
+            // 添加坐标轴辅助器
+            const axesHelper = new THREE.AxesHelper(10);
+            scene.add(axesHelper);
+        }
+        //设置画布大小，这个设置为整个视图，就不需要剪切了
+        function setSize() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+        }
+        //普通的四方体
+        function cube() {
+            var geometry = new THREE.BoxGeometry(1, 1, 1);
+            var material = new THREE.MeshNormalMaterial({ color: 0x00ff00 });
+            cube = new THREE.Mesh(geometry, material);
+            //设置位置
+            cube.position.set(0, 0, -1.5);
+            scene.add(cube);
+        }
+        function animate() {
+            requestAnimationFrame(animate); //一帧帧动画
+            cube.rotation.x += 0.005;
+            cube.rotation.y += 0.005;
+            cube.rotation.z += 0.005;
+            camera.updateProjectionMatrix();
+           // controls.update();
+            cameraHelper.update();
+            renderer.render(scene, camera); //渲染
+        }
+    </script>
+</body>
+
+</html>
